@@ -7,52 +7,10 @@ import java.io.PrintWriter;
 
 public class Tester
 {
-
-    static Matrix kReduction(Matrix m, int k, int k1)
-    {
-	Matrix reduced = new Matrix(m.getArrayCopy(), k, k1);
-	return reduced;
-    }
-
-    public static void main(String[] args) throws Exception
-    {
-	/*	double[][] msub =
-	 {
-	 {
-	 3.0, 4.9, 2.8
-	 },
-	 {
-	 1.4, 4.1, 0.3
-	 },
-	 {
-	 4.9, 1.5, 4
-	 },
-	 {
-	 3.9, 1.5, 1.9
-	 }
-	 };*/
-	File f = new File("/home/luv/NetBeansProjects/SVD/src/MovieLens Data/ratings.dat");
-	BufferedReader br = new BufferedReader(new FileReader(f));
-	double[][] msub = new double[6041][4000];
-	String line = br.readLine();
-	int ctr = 0;
-	while (line != null)
+	
+	static Matrix Normalize(Matrix msub)
 	{
-	    String[] sa = line.split(" ");
-	    msub[Integer.parseInt(sa[0])][Integer.parseInt(sa[1])] = Integer.parseInt(sa[2]);
-	    ctr++;
-	    if ((ctr % 5000) == 0)
-	    {
-		System.out.println("Test:- " + (ctr / 5000));
-		ctr++;
-		if (ctr > 50000)
-		{
-		    break;
-		}
-	    }
-	    line = br.readLine();
-	}
-	for (int i = 0; i < msub[0].length; i++)
+		for (int i = 0; i < msub[0].length; i++)
 	{
 	    int cAv = 0,k=0;
 	    for (int j = 0; j < msub.length; j++)
@@ -106,7 +64,56 @@ public class Tester
 	    }
 	}
 	//Normalization Done
-	Matrix m = new Matrix(msub);
+	return msub;
+		
+	}
+
+    static Matrix kReduction(Matrix m, int k, int k1)
+    {
+	Matrix reduced = new Matrix(m.getArrayCopy(), k, k1);
+	return reduced;
+    }
+
+    public static void main(String[] args) throws Exception
+    {
+	/*	double[][] msub =
+	 {
+	 {
+	 3.0, 4.9, 2.8
+	 },
+	 {
+	 1.4, 4.1, 0.3
+	 },
+	 {
+	 4.9, 1.5, 4
+	 },
+	 {
+	 3.9, 1.5, 1.9
+	 }
+	 };*/
+	File f = new File("/home/luv/NetBeansProjects/SVD/src/MovieLens Data/ratings.dat");
+	BufferedReader br = new BufferedReader(new FileReader(f));
+	double[][] msub = new double[6041][4000];
+	String line = br.readLine();
+	int ctr = 0;
+	while (line != null)
+	{
+	    String[] sa = line.split(" ");
+	    msub[Integer.parseInt(sa[0])][Integer.parseInt(sa[1])] = Integer.parseInt(sa[2]);
+	    ctr++;
+	    if ((ctr % 5000) == 0)
+	    {
+		System.out.println("Test:- " + (ctr / 5000));
+		ctr++;
+		if (ctr > 50000)
+		{
+		    break;
+		}
+	    }
+	    line = br.readLine();
+	}
+	Matrix m1=Normalize(msub);
+	Matrix m = new Matrix(m1);
 //	m.print(4, 3);
 	System.out.println("Performing SVD");
 	SingularValueDecomposition svd = m.svd();
