@@ -54,20 +54,31 @@ public class Tester
 	}
 	for (int i = 0; i < msub[0].length; i++)
 	{
-	    int cAv = 0;
+	    int cAv = 0,k=0;
 	    for (int j = 0; j < msub.length; j++)
 	    {
 		if (msub[j][i] != 0)
 		{
 		    cAv += msub[j][i];
+		    k++;		//counting non zero columns
 		}
 	    }
-	    cAv /= msub.length;
+	    cAv /= k;
+	    int sum=0;
+	    for (int j = 0; j < msub.length; j++)
+	    {
+		if (msub[j][i] != 0)
+		{
+		    sum+=(msub[j][i]-cAv)*(msub[j][i]-cAv);
+		}
+	    }
+	    cAv=sum/k;
+	    int sigma=Math.sqrt(cAv);
 	    for (int j = 0; j < msub.length; j++)
 	    {
 		if (msub[j][i] == 0)
 		{
-		    msub[j][i] = cAv;
+		    msub[j][i] = sigma;
 		}
 	    }
 	}
@@ -80,9 +91,18 @@ public class Tester
 		rAv += msub[i][j];
 	    }
 	    rAv /= msub[0].length;
+	    int sum=0;
+	    for (int j = 0; j < msub.length; j++)
+	    {
+		
+		  sum+=(msub[i][j]-rAv)*(msub[i][j]-rAv);
+		
+	    }
+	    rAv=sum/msub[0].length;
+	    int sigma=Math.sqrt(rAv);
 	    for (int j = 0; j < msub[0].length; j++)
 	    {
-		msub[i][j] -= rAv;
+		msub[i][j] -= sigma;
 	    }
 	}
 	//Normalization Done
